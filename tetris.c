@@ -55,7 +55,8 @@ int speed;
 bool gameOver = false;
 bool moduleActivity;
 bool moduleEnPlace;
-bool enRotation;
+int enRotation;
+bool start;
 
 //////////////////////////// FCT DECLA
 static void moduleRandomizer();
@@ -68,7 +69,7 @@ void detectGameOver();
 
 void InitGame(void)
 {
-    speed=6;
+    speed=4;
     posModule.x=0;
     posModule.y=0;
     SetTargetFPS(speed);
@@ -76,6 +77,7 @@ void InitGame(void)
     moduleSuivantColor=RAYWHITE;
     score=0;
     enRotation=false;
+    start=false;
 
     for (int i = 0; i < MAP_X; i++)
     {
@@ -237,7 +239,7 @@ void rotation()
 
     if (IsKeyDown(KEY_UP) && ((int)posModule.x+1>0)&&((int)posModule.x<MAP_X-3)&&((int)posModule.y<MAP_Y-3)){
         
-        enRotation=true;
+        enRotation=3;
         for (int i = 0; i < 4; i++)
         {
             for (int j = 0; j < 4; j++)
@@ -248,7 +250,7 @@ void rotation()
         
         switch (moduleType)
         {
-        case 0: { break;}      
+        case 0: { module[1][1]= MOBILE; module[2][1]= MOBILE; module[1][2]= MOBILE; module[2][2]= MOBILE; break;}      
         case 1: { 
                 switch (moduleCase){
                 case 0: { module[0][1]= MOBILE; module[1][1]= MOBILE; module[2][1]= MOBILE; module[2][0]= MOBILE; moduleCase=1;} break;
@@ -289,8 +291,8 @@ void rotation()
         
         moduleToMap();
     }
-    else
-    enRotation=false;
+    else{
+        if(enRotation>0) enRotation--;}
     
 }
 void detectCollision()
@@ -419,7 +421,7 @@ void draw(void){
     BeginDrawing();
     
     ClearBackground(RAYWHITE);
-    
+    if(start){
     if (!gameOver){
         
         updateMap();
@@ -443,7 +445,11 @@ void draw(void){
     else{
         DrawText(TextFormat("GAME OVER"), 300, 500, 100, BLACK);
     }
-    
+    }
+    else{
+        DrawText(TextFormat("Appuyez sur [ESPACE] pour commencer la partie "), 100, 500, 40, BLACK);
+        if (IsKeyDown(KEY_SPACE)) start=true;
+    }
 
     EndDrawing();
 
