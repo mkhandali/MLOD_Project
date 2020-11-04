@@ -239,7 +239,7 @@ void rotation()
 
     if (IsKeyDown(KEY_UP) && ((int)posModule.x+1>0)&&((int)posModule.x<MAP_X-3)&&((int)posModule.y<MAP_Y-3)){
         
-        enRotation=3;
+        enRotation=2;
         for (int i = 0; i < 4; i++)
         {
             for (int j = 0; j < 4; j++)
